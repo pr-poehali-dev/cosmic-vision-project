@@ -8,6 +8,7 @@ const Index = () => {
   const [scrollY, setScrollY] = useState(0);
   const [spectrumValue, setSpectrumValue] = useState([33]);
   const [visibleSections, setVisibleSections] = useState<Set<number>>(new Set());
+  const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +26,13 @@ const Index = () => {
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRotation(prev => (prev + 0.5) % 360);
+    }, 50);
+    return () => clearInterval(interval);
   }, []);
 
   const getSpectrumType = (value: number) => {
@@ -319,8 +327,25 @@ const Index = () => {
                     </div>
                   </div>
                   <div className="flex items-center justify-center">
-                    <div className="w-full aspect-square rounded-lg bg-muted/20 flex items-center justify-center border-2 border-dashed border-border">
-                      <Icon name="Focus" className="text-primary" size={64} />
+                    <div className="relative w-full aspect-square rounded-lg bg-gradient-to-br from-muted/20 to-muted/5 flex items-center justify-center overflow-hidden">
+                      <div 
+                        className="absolute inset-0 flex items-center justify-center"
+                        style={{ transform: `rotateY(${rotation}deg)` }}
+                      >
+                        <div className="relative w-48 h-48">
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 blur-xl" />
+                          <div className="absolute inset-4 rounded-full bg-card border-2 border-primary/50" />
+                          <div className="absolute inset-8 rounded-full bg-gradient-to-br from-primary to-secondary opacity-50" />
+                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <Icon name="Telescope" className="text-primary" size={48} />
+                          </div>
+                          <div className="absolute top-0 left-1/2 w-2 h-16 bg-gradient-to-b from-primary to-transparent -translate-x-1/2 -translate-y-8" />
+                          <div className="absolute bottom-0 left-1/2 w-2 h-16 bg-gradient-to-t from-secondary to-transparent -translate-x-1/2 translate-y-8" />
+                        </div>
+                      </div>
+                      <div className="absolute bottom-4 right-4 px-3 py-1 bg-primary/20 rounded font-mono text-xs">
+                        3D MODEL
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -333,7 +358,7 @@ const Index = () => {
                 <p className="text-muted-foreground mb-6">
                   Улавливают радиоволны из космоса. Работают днём и ночью, в любую погоду.
                 </p>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="p-4 bg-muted/20 rounded">
                     <div className="font-mono text-2xl font-bold text-primary">305м</div>
                     <div className="text-sm text-muted-foreground">Аресибо (1963-2020)</div>
@@ -342,6 +367,13 @@ const Index = () => {
                     <div className="font-mono text-2xl font-bold text-secondary">500м</div>
                     <div className="text-sm text-muted-foreground">FAST, Китай (2016)</div>
                   </div>
+                </div>
+                <div className="rounded-lg overflow-hidden">
+                  <img 
+                    src="https://cdn.poehali.dev/projects/6fbc3ddd-4e9d-457b-a1ee-16f6b79a56d3/files/e6830cbe-170a-4b3b-a2a9-09a2220909d7.jpg" 
+                    alt="Galaxy observation" 
+                    className="w-full h-48 object-cover"
+                  />
                 </div>
               </Card>
             </TabsContent>
@@ -352,6 +384,13 @@ const Index = () => {
                 <p className="text-muted-foreground mb-6">
                   Работают за пределами атмосферы, избегая её искажений и поглощения излучения.
                 </p>
+                <div className="mb-6 rounded-lg overflow-hidden">
+                  <img 
+                    src="https://cdn.poehali.dev/projects/6fbc3ddd-4e9d-457b-a1ee-16f6b79a56d3/files/78bc9e8c-38f7-4e6e-b45a-fcf397074ac3.jpg" 
+                    alt="James Webb Space Telescope" 
+                    className="w-full h-64 object-cover"
+                  />
+                </div>
                 <div className="space-y-3">
                   <div className="flex items-center gap-4 p-3 bg-muted/20 rounded">
                     <Icon name="Satellite" className="text-primary" size={24} />
@@ -473,6 +512,14 @@ const Index = () => {
             Современные телескопы создают не просто фотографии — они генерируют массивы данных, 
             которые превращаются в визуальные шедевры благодаря алгоритмам и художественной обработке.
           </p>
+
+          <div className="mb-12 rounded-lg overflow-hidden">
+            <img 
+              src="https://cdn.poehali.dev/projects/6fbc3ddd-4e9d-457b-a1ee-16f6b79a56d3/files/5a08e91a-6f28-4986-a448-eb531be5f85b.jpg" 
+              alt="Deep space nebula" 
+              className="w-full h-96 object-cover"
+            />
+          </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             <Card className="p-6 bg-card/50 backdrop-blur border-border">
